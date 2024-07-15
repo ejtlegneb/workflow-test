@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+          - go
+          - go no version
+          - typescript
+      
+      
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Conditional for 'go'
+      - name: Greet Go
+        if: github.event.inputs.name == 'go'
+        uses: ./.github/actions
+        with:
+          version-context: '-SNAPSHOT'
+
+      # Conditional for 'python'
+      - name: Greet Go nv
+        if: github.event.inputs.name == 'go no version'
+        uses: ./.github/actions
+
+      # Conditional for 'typescript'
+      - name: Greet TypeScript
+        if: github.event.inputs.name == 'typescript'
+        run: echo Hello TypeScript
